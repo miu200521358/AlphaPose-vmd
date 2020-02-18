@@ -345,6 +345,8 @@ def write_json(all_results, outputpath, form=None, for_eval=False):
                     tmp['pose_keypoints_2d'].append(result['keypoints'][i])
                     tmp['pose_keypoints_2d'].append(result['keypoints'][i+1])
                     tmp['pose_keypoints_2d'].append(result['keypoints'][i+2])
+                # 追跡INDEX追加
+                tmp['idx'] = human['idx']
                 json_results_cmu[result['image_id']]['people'].append(tmp)
             else:
                 json_results.append(result)
@@ -363,7 +365,7 @@ def write_json(all_results, outputpath, form=None, for_eval=False):
             if not os.path.exists(os.path.join(outputpath,'sep-json')):
                 os.mkdir(os.path.join(outputpath,'sep-json'))
             for name in json_results_cmu.keys():
-                with open(os.path.join(outputpath,'sep-json',name.split('.')[0]+'.json'),'w') as json_file:
+                with open(os.path.join(outputpath,'sep-json',"{0:012d}.json".format(int(name.split('.')[0]))),'w') as json_file:
                     json_file.write(json.dumps(json_results_cmu[name]))
     else:
         with open(os.path.join(outputpath,'alphapose-results.json'), 'w') as json_file:
