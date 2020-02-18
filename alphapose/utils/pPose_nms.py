@@ -348,7 +348,14 @@ def write_json(all_results, outputpath, form=None, for_eval=False):
                 # 追跡INDEX追加
                 if type(human['idx'] ) == type(list):
                     # list型の場合、小さい値のを取得する
-                    tmp['idx'] = sorted(human['idx'])[0]
+                    target_idx = sorted(human['idx'])[0]
+
+                    if type(target_idx) == type(list):
+                        # list型の場合、小さい値のを取得する
+                        tmp['idx'] = sorted(target_idx)[0]
+                    else:
+                        # それ以外（int型）の場合、そのまま追加
+                        tmp['idx'] = target_idx
                 else:
                     # それ以外（int型）の場合、そのまま追加
                     tmp['idx'] = human['idx']
