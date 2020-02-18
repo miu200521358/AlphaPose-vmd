@@ -346,7 +346,13 @@ def write_json(all_results, outputpath, form=None, for_eval=False):
                     tmp['pose_keypoints_2d'].append(result['keypoints'][i+1])
                     tmp['pose_keypoints_2d'].append(result['keypoints'][i+2])
                 # 追跡INDEX追加
-                tmp['idx'] = human['idx']
+                if type(human['idx'] ) == type(list):
+                    # list型の場合、小さい値のを取得する
+                    tmp['idx'] = sorted(human['idx'])[0]
+                else:
+                    # それ以外（int型）の場合、そのまま追加
+                    tmp['idx'] = human['idx']
+
                 json_results_cmu[result['image_id']]['people'].append(tmp)
             else:
                 json_results.append(result)
