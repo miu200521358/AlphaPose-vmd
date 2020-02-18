@@ -365,6 +365,7 @@ def write_json(all_results, outputpath, form=None, for_eval=False):
             if not os.path.exists(os.path.join(outputpath,'sep-json')):
                 os.mkdir(os.path.join(outputpath,'sep-json'))
             for name in json_results_cmu.keys():
+                # ファイル名０埋め
                 with open(os.path.join(outputpath,'sep-json',"{0:012d}.json".format(int(name.split('.')[0]))),'w') as json_file:
                     json_file.write(json.dumps(json_results_cmu[name]))
     else:
