@@ -345,20 +345,14 @@ def write_json(all_results, outputpath, form=None, for_eval=False):
                     tmp['pose_keypoints_2d'].append(result['keypoints'][i])
                     tmp['pose_keypoints_2d'].append(result['keypoints'][i+1])
                     tmp['pose_keypoints_2d'].append(result['keypoints'][i+2])
+                
                 # 追跡INDEX追加
-                if type(human['idx'] ) == type(list):
-                    # list型の場合、小さい値のを取得する
-                    target_idx = sorted(human['idx'])[0]
+                target_idxs = human['idx']
+                while isinstance(target_idxs, list) == True:
+                    # 配列の中から出す
+                    target_idxs = sorted(target_idxs)[0]
 
-                    if type(target_idx) == type(list):
-                        # list型の場合、小さい値のを取得する
-                        tmp['idx'] = sorted(target_idx)[0]
-                    else:
-                        # それ以外（int型）の場合、そのまま追加
-                        tmp['idx'] = target_idx
-                else:
-                    # それ以外（int型）の場合、そのまま追加
-                    tmp['idx'] = human['idx']
+                tmp['idx'] = target_idxs
 
                 json_results_cmu[result['image_id']]['people'].append(tmp)
             else:
