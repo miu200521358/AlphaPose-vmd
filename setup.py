@@ -118,10 +118,11 @@ def make_cuda_ext(name, module, sources):
 
 def get_ext_modules():
     ext_modules = []
-    # only windows visual studio 2013~2017 support compile c/cuda extensions
+    # only windows visual studio 2013+ support compile c/cuda extensions
     # If you force to compile extension on Windows and ensure appropriate visual studio
     # is intalled, you can try to use these ext_modules.
-    if platform.system() != 'Windows':
+    force_compile = False
+    if platform.system() != 'Windows' or force_compile:
         ext_modules = [
             make_cython_ext(
                 name='soft_nms_cpu',
@@ -164,7 +165,7 @@ def get_install_requires():
         'tqdm', 'tensorboardx', 'easydict',
         'pyyaml',
         'torch>=1.1.0', 'torchvision>=0.3.0',
-        'munkres'
+        'munkres', 'timm==0.1.20', 'natsort'
     ]
     # official pycocotools doesn't support Windows, we will install it by third-party git repository later
     if platform.system() != 'Windows':
@@ -213,9 +214,9 @@ if __name__ == '__main__':
     # Windows need pycocotools here: https://github.com/philferriere/cocoapi#subdirectory=PythonAPI
     if platform.system() == 'Windows' and not is_installed('pycocotools'):
         print("\nInstall third-party pycocotools for Windows...")
-        cmd = 'pip install git+https://github.com/philferriere/cocoapi.git#subdirectory=PythonAPI'
+        cmd = 'python -m pip install git+https://github.com/philferriere/cocoapi.git#subdirectory=PythonAPI'
         os.system(cmd)
     if not is_installed('cython_bbox'):
         print("\nInstall `cython_bbox`...")
-        cmd = 'pip install git+https://github.com/yanfengliu/cython_bbox.git'
+        cmd = 'python -m pip install git+https://github.com/yanfengliu/cython_bbox.git'
         os.system(cmd)

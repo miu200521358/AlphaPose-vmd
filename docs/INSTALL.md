@@ -6,6 +6,7 @@
 * PyTorch 1.1+
 * torchvision 0.3.0+
 * Linux, [Windows user check here](#Windows)
+* GCC<6.0, check https://github.com/facebookresearch/maskrcnn-benchmark/issues/25
 
 ### Code installation
 
@@ -27,8 +28,14 @@ cd AlphaPose
 # 4. install
 export PATH=/usr/local/cuda/bin/:$PATH
 export LD_LIBRARY_PATH=/usr/local/cuda/lib64/:$LD_LIBRARY_PATH
-pip install cython
+python -m pip install cython
 sudo apt-get install libyaml-dev
+################Only For Ubuntu 18.04#################
+locale-gen C.UTF-8
+# if locale-gen not found
+sudo apt-get install locales
+export LANG=C.UTF-8
+######################################################
 python setup.py build develop
 ```
 
@@ -50,6 +57,9 @@ python setup.py build develop --user
 ```
 
 #### Windows
+The installation process is same as above. But note that Windows users may face problem when installing cuda extension. Thus we disable the cuda extension in the setup.py by default. The affect is that models ended with "-dcn" is not supported. If you force to make cuda extension by modify [this line](https://github.com/MVIG-SJTU/AlphaPose/blob/master/setup.py#L124) to True, you should install Visual Studio due to the problem mentioned [here](https://github.com/MVIG-SJTU/AlphaPose/blob/master/setup.py#L121).
+We recommend Windows users to run models like FastPose, FastPose-duc, etc., as they also provide good accuracy and speed.
+
 For Windows user, if you meet error with PyYaml, you can download and install it manually from here: https://pyyaml.org/wiki/PyYAML.
 If your OS platform is `Windows`, make sure that Windows C++ build tool like visual studio 15+ or visual c++ 2015+ is installed for training.
 
